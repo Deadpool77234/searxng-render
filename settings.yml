@@ -1,0 +1,29 @@
+use_default_settings: true
+
+general:
+  instance_name: "My SearXNG"
+
+server:
+  secret_key: "replace-this-with-render-secret"
+  limiter: false
+  image_proxy: false
+  public_instance: false
+
+engines:
+  - name: ahmia
+    disabled: true
+
+  - name: torch
+    disabled: true
+
+  - name: brave
+    disabled: true
+
+  - name: duckduckgo
+    disabled: true
+
+  - name: google cse
+    disabled: true
+
+  - name: startpage
+    disabled: true
