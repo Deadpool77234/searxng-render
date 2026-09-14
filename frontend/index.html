@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MySearch — Personal Search</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="topbar">
+        <a class="brand" href="#" id="brandLink">
+            <span class="brand-mark">M</span>
+            <span class="brand-name">MySearch</span>
+        </a>
+
+        <div class="topbar-note">
+            Personal web search
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- HERO / HOMEPAGE -->
+        <section class="hero" id="hero">
+
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                Search the web, your way.
+            </div>
+
+            <h1>
+                Find what
+                <span>matters.</span>
+            </h1>
+
+            <p class="subtitle">
+                A simple personal search interface powered by
+                your own search infrastructure.
+            </p>
+
+        </section>
+
+
+        <!-- SEARCH BAR -->
+        <section class="search-section">
+
+            <form id="searchForm" class="search-form">
+
+                <div class="search-box">
+
+                    <span class="search-icon">⌕</span>
+
+                    <input
+                        id="searchInput"
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search the web..."
+                        aria-label="Search"
+                    >
+
+                    <button
+                        type="button"
+                        id="clearButton"
+                        class="clear-button hidden"
+                        aria-label="Clear search"
+                    >
+                        ×
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+            </form>
+
+            <div class="shortcut">
+                Press <kbd>/</kbd> to focus search
+            </div>
+
+        </section>
+
+
+        <!-- SEARCH RESULTS -->
+        <section class="search-area">
+
+            <nav
+                class="categories"
+                aria-label="Search categories"
+            >
+
+                <button
+                    class="category active"
+                    data-category="general"
+                >
+                    Web
+                </button>
+
+                <button
+                    class="category"
+                    data-category="images"
+                >
+                    Images
+                </button>
+
+                <button
+                    class="category"
+                    data-category="news"
+                >
+                    News
+                </button>
+
+                <button
+                    class="category"
+                    data-category="videos"
+                >
+                    Videos
+                </button>
+
+            </nav>
+
+
+            <div
+                id="searchMeta"
+                class="search-meta hidden"
+            ></div>
+
+
+            <div id="state" class="state">
+
+                <div class="state-mark">⌁</div>
+
+                <h2>Start with a search</h2>
+
+                <p>
+                    Search websites, news, images and videos
+                    from one place.
+                </p>
+
+            </div>
+
+
+            <div
+                id="results"
+                class="results"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+        <span>MySearch</span>
+
+        <span>
+            Personal search infrastructure
+        </span>
+    </footer>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
