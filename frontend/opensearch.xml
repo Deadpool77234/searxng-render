@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>MySearch</ShortName>
+  <Description>Personal Federated Search Engine with Instant Answers and ECE Tools</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/svg+xml">https://mysearch-dhruv.netlify.app/icon-192.svg</Image>
+  <Url type="text/html" template="https://mysearch-dhruv.netlify.app/?q={searchTerms}"/>
+</OpenSearchDescription>

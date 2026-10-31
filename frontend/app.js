@@ -165,6 +165,11 @@ const apiEndpointInput = document.getElementById("apiEndpointInput");
 const saveApiEndpointBtn = document.getElementById("saveApiEndpointBtn");
 const autoDetectApiBtn = document.getElementById("autoDetectApiBtn");
 const apiStatusMessage = document.getElementById("apiStatusMessage");
+const aiAnswerCard = document.getElementById("aiAnswerCard");
+const aiAnswerText = document.getElementById("aiAnswerText");
+const aiSourcesCount = document.getElementById("aiSourcesCount");
+const aiSourcesPills = document.getElementById("aiSourcesPills");
+const aiCopyBtn = document.getElementById("aiCopyBtn");
 
 let cachedBangs = [];
 let activeEceTab = "ohm";
@@ -1136,6 +1141,104 @@ if (clearHistoryButton) {
    MAIN SEARCH ENGINE
 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
+
+/* ── Perplexity-Style AI Answer Synthesis Engine ── */
+function renderAiSynthesis(query, results) {
+    if (!aiAnswerCard || !aiAnswerText) return;
+
+    const topSources = results.filter(r => (r.content || r.snippet)).slice(0, 5);
+    if (topSources.length === 0) {
+        aiAnswerCard.classList.add("hidden");
+        return;
+    }
+
+    const queryTerms = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    const candidateSentences = [];
+
+    topSources.forEach((src, srcIdx) => {
+        const text = (src.content || src.snippet || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+        const rawSentences = text.split(/(?<=[.!?])\s+/);
+        rawSentences.forEach(s => {
+            const clean = s.trim();
+            if (clean.length < 25 || clean.length > 260) return;
+            if (/cookie|privacy policy|terms of service|sign in|log in|subscribe/i.test(clean)) return;
+
+            const lower = clean.toLowerCase();
+            let score = 0;
+            queryTerms.forEach(term => {
+                if (lower.includes(term)) score += 2;
+            });
+            if (score > 0) {
+                candidateSentences.push({
+                    text: clean,
+                    score: score + (5 - srcIdx),
+                    sourceIdx: srcIdx + 1,
+                    source: src
+                });
+            }
+        });
+    });
+
+    candidateSentences.sort((a, b) => b.score - a.score);
+
+    const chosen = [];
+    for (const item of candidateSentences) {
+        if (chosen.length >= 3) break;
+        const isDuplicate = chosen.some(c => {
+            const wordsA = new Set(c.text.toLowerCase().split(/\s+/));
+            const wordsB = new Set(item.text.toLowerCase().split(/\s+/));
+            const intersection = [...wordsA].filter(x => wordsB.has(x));
+            return (intersection.length / Math.min(wordsA.size, wordsB.size)) > 0.65;
+        });
+        if (!isDuplicate) chosen.push(item);
+    }
+
+    let summaryHtml = "";
+    if (chosen.length > 0) {
+        summaryHtml = chosen.map(item => {
+            const cite = `<a class="ai-citation-tag" href="${item.source.url}" target="_blank" rel="noopener noreferrer" title="${item.source.title}">[${item.sourceIdx}]</a>`;
+            return `<p>${escapeHtml(item.text)} ${cite}</p>`;
+        }).join("");
+    } else {
+        summaryHtml = topSources.slice(0, 2).map((src, i) => {
+            const snippet = (src.content || src.snippet || "").replace(/<[^>]+>/g, "").slice(0, 200).trim();
+            const cite = `<a class="ai-citation-tag" href="${src.url}" target="_blank" rel="noopener noreferrer" title="${src.title}">[${i + 1}]</a>`;
+            return `<p>${escapeHtml(snippet)}... ${cite}</p>`;
+        }).join("");
+    }
+
+    aiAnswerText.innerHTML = summaryHtml;
+
+    if (aiSourcesPills) {
+        aiSourcesPills.innerHTML = topSources.map((src, i) => {
+            let domain = "";
+            try { domain = new URL(src.url).hostname.replace(/^www\./, ""); } catch(e) { domain = "source"; }
+            const cleanTitle = (src.title || domain).replace(/<[^>]+>/g, "");
+            return `<a class="ai-source-pill" href="${src.url}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(cleanTitle)}">
+                <span class="pill-num">${i + 1}</span>
+                <span>${escapeHtml(domain)}</span>
+            </a>`;
+        }).join("");
+    }
+
+    if (aiSourcesCount) {
+        aiSourcesCount.textContent = `Synthesized across ${topSources.length} verified sources`;
+    }
+
+    if (aiCopyBtn) {
+        aiCopyBtn.onclick = () => {
+            const plain = aiAnswerText.innerText.replace(/\[\d+\]/g, "");
+            navigator.clipboard.writeText(plain.trim()).then(() => {
+                showToast("AI answer copied to clipboard!");
+            }).catch(() => {
+                showToast("Failed to copy answer");
+            });
+        };
+    }
+
+    aiAnswerCard.classList.remove("hidden");
+}
+
 async function performSearch(query) {
     if (isBookmarksViewActive || isVaultViewActive) {
         switchToSearchView();
@@ -1149,6 +1252,7 @@ async function performSearch(query) {
         resultsContainer.innerHTML = "";
         searchMeta.classList.add("hidden");
         if (vaultBlendedCard) vaultBlendedCard.classList.add("hidden");
+        if (aiAnswerCard) aiAnswerCard.classList.add("hidden");
         if (instantAnswerCard) instantAnswerCard.classList.add("hidden");
         await loadHistory();
         return;
@@ -1213,6 +1317,20 @@ async function performSearch(query) {
                     metaText.textContent = `Instant calculator answer (${elapsed}s)`;
                     metaCategoryBadge.textContent = "Instant Answer";
                     searchMeta.classList.remove("hidden");
+
+        // Perplexity-Style AI Answer Synthesis
+        if (aiAnswerCard && results.length >= 2 && !data.instant_answer) {
+            renderAiSynthesis(cleanQuery, results);
+        } else if (aiAnswerCard) {
+            aiAnswerCard.classList.add("hidden");
+        }
+
+        // Update URL query parameter for browser history and bookmarking
+        try {
+            const searchUrl = new URL(window.location.href);
+            searchUrl.searchParams.set("q", cleanQuery);
+            window.history.pushState({ query: cleanQuery }, "", searchUrl.toString());
+        } catch(e) {}
                 }
                 await loadHistory();
                 return;
@@ -2994,6 +3112,16 @@ document.addEventListener("DOMContentLoaded", () => {
     loadBangs();
     initBangsAutocomplete();
     initApiEndpointSettings();
+
+    // OpenSearch & URL Query Auto-Search Handler
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialQuery = urlParams.get("q");
+        if (initialQuery && initialQuery.trim()) {
+            searchInput.value = initialQuery.trim();
+            performSearch(initialQuery.trim());
+        }
+    } catch(e) {}
 });
 
 
