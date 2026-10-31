@@ -1,4 +1,4 @@
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+﻿/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    MYSEARCH â€” FRONTEND APPLICATION SCRIPT
    Version: 3.1 (Federated Search + Knowledge Bookmarks)
 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -31,8 +31,8 @@ function resolveApiBase() {
         if (!host.endsWith(".netlify.app") && !host.endsWith(".pages.dev") && !host.endsWith(".vercel.app")) {
             return `${window.location.protocol}//${host}:8000`;
         }
-        // Hosted on Netlify / Cloudflare Pages / Vercel
-        return "https://mysearch-api.onrender.com";
+        // Hosted on Netlify — use relative URLs (Netlify Functions on same domain)
+        return "";
     }
 
     return "http://127.0.0.1:8000";
