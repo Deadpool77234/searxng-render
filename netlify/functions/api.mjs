@@ -157,9 +157,9 @@ export default async (req, context) => {
 
         // Fetch from SearXNG
         try {
-            const searxUrl = `${SEARXNG_URL}/search?q=${encodeURIComponent(q)}&format=json&category=${encodeURIComponent(category)}`;
+            const searxUrl = `${SEARXNG_URL}/search?q=${encodeURIComponent(q)}&format=json&categories=${encodeURIComponent(category)}`;
             const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 12000);
+            const timer = setTimeout(() => controller.abort(), 25000);
             const res = await fetch(searxUrl, { signal: controller.signal });
             clearTimeout(timer);
 
