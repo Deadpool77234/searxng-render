@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="192" y2="192" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1b4332"/>
+      <stop offset="100%" stop-color="#0a110d"/>
+    </linearGradient>
+    <linearGradient id="emeraldGlow" x1="40" y1="40" x2="152" y2="152" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#52b788"/>
+      <stop offset="100%" stop-color="#2d6a4f"/>
+    </linearGradient>
+  </defs>
+  <!-- Background with subtle border -->
+  <rect width="192" height="192" rx="44" fill="url(#bgGrad)"/>
+  <rect x="2" y="2" width="188" height="188" rx="42" stroke="rgba(82, 183, 136, 0.3)" stroke-width="2"/>
+  
+  <!-- Search Lens Icon -->
+  <g transform="translate(18, 18)">
+    <circle cx="70" cy="70" r="46" stroke="url(#emeraldGlow)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="104" y1="104" x2="136" y2="136" stroke="url(#emeraldGlow)" stroke-width="14" stroke-linecap="round"/>
+    <!-- Focus Reticle Crosshair -->
+    <path d="M70 48v44M48 70h44" stroke="#d8f3dc" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>

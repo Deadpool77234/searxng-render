@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bgGrad512" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1b4332"/>
+      <stop offset="100%" stop-color="#0a110d"/>
+    </linearGradient>
+    <linearGradient id="emeraldGlow512" x1="100" y1="100" x2="412" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#52b788"/>
+      <stop offset="100%" stop-color="#2d6a4f"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad512)"/>
+  <rect x="4" y="4" width="504" height="504" rx="108" stroke="rgba(82, 183, 136, 0.3)" stroke-width="4"/>
+  <g transform="translate(48, 48)">
+    <circle cx="186" cy="186" r="122" stroke="url(#emeraldGlow512)" stroke-width="36" stroke-linecap="round"/>
+    <line x1="276" y1="276" x2="362" y2="362" stroke="url(#emeraldGlow512)" stroke-width="36" stroke-linecap="round"/>
+    <path d="M186 128v116M128 186h116" stroke="#d8f3dc" stroke-width="20" stroke-linecap="round"/>
+  </g>
+</svg>

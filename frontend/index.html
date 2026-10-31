@@ -1,180 +1,825 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1b4332">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MySearch">
+    <title>MySearch — Personal Federated Search Platform</title>
 
-    <title>MySearch — Personal Search</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon-192.svg">
+    <link rel="apple-touch-icon" href="icon-192.svg">
 
-    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts: Plus Jakarta Sans for UI + JetBrains Mono for system badges -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css?v=4.0">
 </head>
+<body class="light-theme">
 
-<body>
+<div class="app-layout">
 
-<div class="page">
+    <!-- TOPBAR NAVIGATION -->
+    <header class="topbar" id="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="#" id="brandLink" title="Return to MySearch Homepage">
+                <div class="brand-icon-box">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <path d="M11 8v6"></path>
+                        <path d="M8 11h6"></path>
+                    </svg>
+                </div>
+                <div class="brand-name-group">
+                    <span class="brand-name">MySearch</span>
+                    <span class="brand-badge">Personal</span>
+                </div>
+            </a>
 
-    <header class="topbar">
-        <a class="brand" href="#" id="brandLink">
-            <span class="brand-mark">M</span>
-            <span class="brand-name">MySearch</span>
-        </a>
+            <!-- Right-side topbar controls -->
+            <div class="topbar-controls">
+                <div class="status-pill" title="Backend connected to SearXNG">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SearXNG Ready</span>
+                </div>
 
-        <div class="topbar-note">
-            Personal web search
+                <!-- Bookmarks Navigation Button -->
+                <button type="button" class="bookmarks-nav-btn" id="bookmarksToggleBtn" title="View Saved Bookmarks">
+                    <svg class="star-icon-nav" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span>Saved</span>
+                    <span class="bookmarks-pill-count" id="bookmarksCountBadge">0</span>
+                </button>
+
+                <!-- Vault Navigation Button -->
+                <button type="button" class="vault-nav-btn" id="vaultToggleBtn" title="Personal Knowledge Vault & PDFs">
+                    <svg class="vault-icon-nav" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span>Vault</span>
+                    <span class="vault-pill-count" id="vaultCountBadge">0</span>
+                </button>
+
+                <!-- ECE Tools Navigation Button -->
+                <button type="button" class="ece-nav-btn" id="eceToggleBtn" title="ECE Engineering Calculators & Quick Tools">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                    </svg>
+                    <span>ECE Tools</span>
+                </button>
+
+                <!-- Quick Bangs Button -->
+                <button type="button" class="bangs-nav-btn" id="bangsToggleBtn" title="Quick Bang Shortcuts (!gh, !yt, !w, !arxiv)">
+                    <span class="bang-symbol-pill">!</span>
+                    <span>Bangs</span>
+                </button>
+
+                <!-- Domain Preferences Navigation Button -->
+                <button type="button" class="preferences-nav-btn" id="preferencesToggleBtn" title="Domain Boosting & Spam Filters">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>Rankings</span>
+                    <span class="preferences-pill-count" id="rulesCountBadge">0</span>
+                </button>
+
+                <!-- Theme Toggle Button -->
+                <button type="button" class="theme-switch-btn" id="themeToggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+                    <span class="theme-icon sun-icon" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </span>
+                    <span class="theme-icon moon-icon" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                    <span class="theme-label" id="themeLabelText">Dark</span>
+                </button>
+            </div>
         </div>
     </header>
 
+    <!-- MAIN APP CONTAINER -->
+    <main class="main-stage">
 
-    <main>
-
-        <!-- HERO / HOMEPAGE -->
+        <!-- HERO SECTION (HOMEPAGE) -->
         <section class="hero" id="hero">
-
-            <div class="eyebrow">
-                <span class="status-dot"></span>
-                Search the web, your way.
+            <div class="hero-chip">
+                <span class="chip-spark">✦</span>
+                <span>Federated &middot; Private &middot; Zero Tracking</span>
             </div>
 
-            <h1>
-                Find what
-                <span>matters.</span>
+            <h1 class="hero-headline">
+                Find what <span class="gradient-word">matters.</span>
             </h1>
 
-            <p class="subtitle">
-                A simple personal search interface powered by
-                your own search infrastructure.
+            <p class="hero-subtext">
+                Your private search platform. Clean results aggregated from the open web without trackers, ads, or data collection.
             </p>
 
+            <!-- Quick clickable suggestion prompts -->
+            <div class="prompts-grid" id="suggestionChips">
+                <span class="prompts-title">Explore:</span>
+                <button type="button" class="prompt-pill" data-search="FastAPI Python framework">FastAPI</button>
+                <button type="button" class="prompt-pill" data-search="Docker containers guide">Docker</button>
+                <button type="button" class="prompt-pill" data-search="Electronics and computer engineering">ECE Projects</button>
+                <button type="button" class="prompt-pill" data-search="Artificial intelligence research">AI Research</button>
+            </div>
+
+            <!-- PERSONAL SPEED DIALS / QUICK LAUNCH -->
+            <div class="speed-dials-bar" id="speedDialsBar">
+                <div class="speed-dials-row" id="speedDialsRow">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
         </section>
 
+        <!-- SEARCH BAR & CATEGORIES -->
+        <section class="search-section" id="searchSection">
 
-        <!-- SEARCH BAR -->
-        <section class="search-section">
+            <!-- Category Tabs -->
+            <nav class="categories-tabbar" id="categoriesNav" aria-label="Search categories">
+                <button class="category active" data-category="general" type="button">
+                    <svg class="cat-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <span>Web</span>
+                </button>
+                <button class="category" data-category="images" type="button">
+                    <svg class="cat-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>Images</span>
+                </button>
+                <button class="category" data-category="news" type="button">
+                    <svg class="cat-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path>
+                        <path d="M18 14h-8"></path>
+                        <path d="M15 18h-5"></path>
+                        <path d="M10 6h8v4h-8V6Z"></path>
+                    </svg>
+                    <span>News</span>
+                </button>
+                <button class="category" data-category="videos" type="button">
+                    <svg class="cat-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    <span>Videos</span>
+                </button>
+                <button class="category" data-category="local" type="button">
+                    <svg class="cat-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span>Notes & Docs</span>
+                </button>
+            </nav>
 
-            <form id="searchForm" class="search-form">
-
+            <!-- Search Form Container -->
+            <form id="searchForm" class="search-form" role="search">
                 <div class="search-box">
-
-                    <span class="search-icon">⌕</span>
+                    <div class="search-icon-prefix" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
 
                     <input
                         id="searchInput"
                         type="text"
                         autocomplete="off"
-                        placeholder="Search the web..."
-                        aria-label="Search"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        placeholder="Search web, news, images, code, or topics..."
+                        aria-label="Search query"
                     >
 
+                    <!-- Clear input button -->
                     <button
                         type="button"
                         id="clearButton"
-                        class="clear-button hidden"
+                        class="clear-input-btn hidden"
                         aria-label="Clear search"
+                        title="Clear input (Esc)"
                     >
-                        ×
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
                     </button>
 
-                    <button
-                        type="submit"
-                        class="search-button"
-                    >
-                        Search
-                    </button>
+                    <!-- Keyboard shortcut kbd -->
+                    <div class="kbd-pill" title="Press / to focus">
+                        <kbd>/</kbd>
+                    </div>
 
+                    <!-- Search submit button -->
+                    <button type="submit" class="search-submit-btn" aria-label="Search">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <span>Search</span>
+                    </button>
                 </div>
 
+                <!-- Real-time Quick Bangs Autocomplete Dropdown -->
+                <div id="bangsDropdown" class="bangs-dropdown hidden" role="listbox"></div>
             </form>
-
-            <div class="shortcut">
-                Press <kbd>/</kbd> to focus search
-            </div>
 
         </section>
 
+        <!-- RECENT SEARCHES PANEL -->
+        <section class="history-panel hidden" id="historySection">
+            <div class="history-panel-header">
+                <div class="history-panel-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>Recent Searches</span>
+                    <span class="history-counter" id="historyCount">0</span>
+                </div>
 
-        <!-- SEARCH RESULTS -->
-        <section class="search-area">
-
-            <nav
-                class="categories"
-                aria-label="Search categories"
-            >
-
-                <button
-                    class="category active"
-                    data-category="general"
-                >
-                    Web
+                <button type="button" class="clear-history-action" id="clearHistoryButton" title="Clear all search history">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span>Clear all</span>
                 </button>
-
-                <button
-                    class="category"
-                    data-category="images"
-                >
-                    Images
-                </button>
-
-                <button
-                    class="category"
-                    data-category="news"
-                >
-                    News
-                </button>
-
-                <button
-                    class="category"
-                    data-category="videos"
-                >
-                    Videos
-                </button>
-
-            </nav>
-
-
-            <div
-                id="searchMeta"
-                class="search-meta hidden"
-            ></div>
-
-
-            <div id="state" class="state">
-
-                <div class="state-mark">⌁</div>
-
-                <h2>Start with a search</h2>
-
-                <p>
-                    Search websites, news, images and videos
-                    from one place.
-                </p>
-
             </div>
 
+            <div class="history-items-row" id="historyList"></div>
+        </section>
 
-            <div
-                id="results"
-                class="results"
-            ></div>
+        <!-- BOOKMARKS & SAVED KNOWLEDGE LIBRARY VIEW -->
+        <section class="bookmarks-section hidden" id="bookmarksSection">
+            <div class="bookmarks-header">
+                <div class="bookmarks-header-left">
+                    <div class="bookmarks-badge-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="bookmarks-heading">Saved Knowledge Library</h2>
+                        <p class="bookmarks-subheading">Your personal curated collection of links, docs, and search findings.</p>
+                    </div>
+                </div>
+
+                <button type="button" class="back-to-search-btn" id="backToSearchBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Back to Search</span>
+                </button>
+            </div>
+
+            <!-- Bookmarks Tag Filter Bar -->
+            <div class="bookmarks-filter-row" id="bookmarksTagFilters">
+                <button type="button" class="tag-filter-chip active" data-tag="">All</button>
+            </div>
+
+            <!-- Bookmarks Cards List -->
+            <div class="bookmarks-grid" id="bookmarksList"></div>
+        </section>
+
+        <!-- LOCAL KNOWLEDGE VAULT VIEW (SQLITE FTS5) -->
+        <section class="vault-section hidden" id="vaultSection">
+            <div class="vault-header">
+                <div class="vault-header-left">
+                    <div class="vault-badge-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="vault-heading">Personal Knowledge Vault</h2>
+                        <p class="vault-subheading">Full-text searchable engineering notes, cheatsheets, and personal PDFs (SQLite FTS5).</p>
+                    </div>
+                </div>
+
+                <div class="vault-actions-group">
+                    <button type="button" class="vault-action-btn primary" id="openNoteModalBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>New Note</span>
+                    </button>
+
+                    <button type="button" class="vault-action-btn" id="uploadFileTriggerBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span>Upload PDF / Docs</span>
+                    </button>
+                    <!-- Hidden file input for uploads -->
+                    <input type="file" id="vaultFileInput" accept=".pdf,.md,.txt,.py,.c,.cpp" style="display: none;">
+
+                    <button type="button" class="back-to-search-btn" id="backToSearchFromVaultBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Back to Search</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vault Category Filter Bar -->
+            <div class="vault-filter-row" id="vaultCategoryFilters">
+                <button type="button" class="tag-filter-chip active" data-category="">All Vault Docs (<span id="vaultAllFilterCount">0</span>)</button>
+                <button type="button" class="tag-filter-chip" data-category="notes">Notes</button>
+                <button type="button" class="tag-filter-chip" data-category="cheatsheets">Cheatsheets</button>
+                <button type="button" class="tag-filter-chip" data-category="pdf">PDFs</button>
+            </div>
+
+            <!-- Vault Documents Cards Grid -->
+            <div class="vault-grid" id="vaultList"></div>
+        </section>
+
+        <!-- SEARCH RESULTS STAGE -->
+        <section class="results-stage" id="resultsStage">
+
+            <!-- Interactive ECE & Math Instant Answer Card -->
+            <div id="instantAnswerCard" class="instant-answer-card hidden"></div>
+
+            <!-- Result Metadata Bar -->
+            <div id="searchMeta" class="search-meta-bar hidden">
+                <div class="meta-left">
+                    <span class="meta-pulse"></span>
+                    <span id="metaText">0 results found</span>
+                </div>
+                <div class="meta-right">
+                    <span class="meta-badge" id="metaCategoryBadge">Web</span>
+                </div>
+            </div>
+
+            <!-- Blended Personal Vault Intelligence Card -->
+            <div id="vaultBlendedCard" class="vault-blended-card hidden">
+                <div class="vault-blended-header">
+                    <div class="vault-blended-title">
+                        <span class="vault-blended-pulse"></span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span>From Your Personal Knowledge Vault</span>
+                    </div>
+                    <span class="vault-blended-badge" id="vaultMatchesCountBadge">0 matches</span>
+                </div>
+                <div class="vault-blended-items" id="vaultBlendedItems"></div>
+            </div>
+
+            <!-- State container (Initial greeting, Loading skeleton, Error, No results) -->
+            <div id="state" class="state-card">
+                <div class="state-icon-circle">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+                <h2 class="state-title">Search across the web</h2>
+                <p class="state-desc">Enter any query or select an exploration chip above to search websites, images, news, and videos.</p>
+            </div>
+
+            <!-- Real Results Container -->
+            <div id="results" class="results-container"></div>
 
         </section>
 
     </main>
 
-
-    <footer class="footer">
-        <span>MySearch</span>
-
-        <span>
-            Personal search infrastructure
-        </span>
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        <div class="footer-meta">
+            <span class="footer-title">MySearch</span>
+            <span class="footer-sep">&middot;</span>
+            <span class="footer-tech">Federated Personal Search &middot; SearXNG</span>
+        </div>
+        <div class="footer-hints">
+            <span>Press <kbd>/</kbd> to search &middot; <kbd>Esc</kbd> to clear</span>
+        </div>
     </footer>
 
 </div>
 
-<script src="app.js"></script>
+<!-- DOMAIN RANKING & SPAM FILTER MODAL -->
+<div id="preferencesModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="preferencesModalTitle">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <div class="modal-icon-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="modal-title" id="preferencesModalTitle">Domain Ranking & Filters</h2>
+                    <p class="modal-subtitle">Prioritize authoritative engineering sources and ban scraper domains.</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" id="closePreferencesBtn" aria-label="Close dialog">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
 
+        <div class="modal-body">
+            <!-- Add New Rule Section -->
+            <form id="addRuleForm" class="add-rule-form">
+                <div class="rule-inputs-row">
+                    <div class="input-field-group flex-2">
+                        <label for="newRuleDomain">Domain</label>
+                        <input type="text" id="newRuleDomain" placeholder="e.g. docs.rs, geeksforgeeks.org" required autocomplete="off">
+                    </div>
+                    <div class="input-field-group flex-1">
+                        <label for="newRuleType">Action</label>
+                        <select id="newRuleType">
+                            <option value="boost">⚡ Boost</option>
+                            <option value="block">🚫 Block (Drop)</option>
+                        </select>
+                    </div>
+                    <div class="input-field-group flex-1" id="weightGroup">
+                        <label for="newRuleWeight">Multiplier</label>
+                        <select id="newRuleWeight">
+                            <option value="1.5">1.5x (Subtle)</option>
+                            <option value="2.0" selected>2.0x (Standard)</option>
+                            <option value="2.5">2.5x (Priority)</option>
+                            <option value="3.0">3.0x (Maximum)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="rule-inputs-row-sub">
+                    <input type="text" id="newRuleNotes" class="notes-input" placeholder="Notes (e.g. Official Documentation, Academic, Spam Scraper)" maxlength="150">
+                    <button type="submit" class="add-rule-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Add Rule</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Rules Filter Tabs -->
+            <div class="rules-tab-row">
+                <button type="button" class="rules-filter-tab active" data-filter="all">All Rules (<span id="allRulesCount">0</span>)</button>
+                <button type="button" class="rules-filter-tab" data-filter="boost">⚡ Boosted (<span id="boostRulesCount">0</span>)</button>
+                <button type="button" class="rules-filter-tab" data-filter="block">🚫 Blocked (<span id="blockRulesCount">0</span>)</button>
+            </div>
+
+            <!-- Existing Rules List -->
+            <div class="rules-scroll-list" id="rulesListContainer">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Privacy Data Portability & Backup -->
+            <div class="backup-section">
+                <div class="backup-title-group">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span class="backup-label">Personal Data Portability & Backup</span>
+                </div>
+                <div class="backup-actions-row">
+                    <button type="button" class="backup-btn" id="exportDataBtn" title="Download your search history, bookmarks, domain rules, and vault notes">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export All Data (JSON)</span>
+                    </button>
+                    <button type="button" class="backup-btn" id="importDataTriggerBtn" title="Restore your data from a previous JSON backup">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span>Restore Backup</span>
+                    </button>
+                    <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Mobile & Cloud API Server Endpoint Config -->
+            <div class="backup-section api-config-section">
+                <div class="backup-title-group">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                    <span class="backup-label">Mobile & Cloud Backend Endpoint</span>
+                </div>
+                <p class="api-config-sub">Point this frontend to your local Wi-Fi IP or hosted Render API service.</p>
+                <div class="api-endpoint-row">
+                    <input type="url" id="apiEndpointInput" class="api-endpoint-field" placeholder="http://192.168.73.76:8000 or https://your-app.onrender.com" spellcheck="false">
+                    <button type="button" class="backup-btn save-api-btn" id="saveApiEndpointBtn">Save</button>
+                    <button type="button" class="backup-btn auto-api-btn" id="autoDetectApiBtn" title="Reset to auto-detected address">Auto</button>
+                </div>
+                <div class="api-status-pill" id="apiStatusDisplay">
+                    <span class="status-dot live-dot"></span>
+                    <span class="api-status-text" id="apiStatusMessage">Active endpoint: auto-detecting...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ECE ENGINEERING CALCULATORS & TOOLS MODAL -->
+<div id="eceModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="eceModalTitle">
+    <div class="modal-card ece-modal-card">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <div class="modal-icon-badge ece-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="modal-title" id="eceModalTitle">ECE Engineering Workstation</h2>
+                    <p class="modal-subtitle">Interactive hardware, circuit formulas, and unit conversion calculators.</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" id="closeEceModalBtn" aria-label="Close dialog">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- ECE Tool Selector Tabs -->
+        <div class="ece-tab-bar" id="eceTabBar">
+            <button type="button" class="ece-tab active" data-tool="ohm">⚡ Ohm's Law & Power</button>
+            <button type="button" class="ece-tab" data-tool="resistor">🎨 Resistor Bands</button>
+            <button type="button" class="ece-tab" data-tool="rc">〰️ RC Filter</button>
+            <button type="button" class="ece-tab" data-tool="db">🔊 Decibels (dB/dBm)</button>
+            <button type="button" class="ece-tab" data-tool="base">🔢 Base Converter</button>
+        </div>
+
+        <div class="modal-body ece-tool-stage" id="eceToolStage">
+            <!-- Dynamically populated calculator interfaces -->
+        </div>
+    </div>
+</div>
+
+<!-- QUICK BANGS DIRECTORY & SHORTCUTS MODAL -->
+<div id="bangsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="bangsModalTitle">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <div class="modal-icon-badge bangs-icon-badge">
+                    <span style="font-size: 18px; font-weight: 800; font-family: 'JetBrains Mono', monospace;">!</span>
+                </div>
+                <div>
+                    <h2 class="modal-title" id="bangsModalTitle">Quick Bang Shortcuts</h2>
+                    <p class="modal-subtitle">Prefix your query with !prefix to search external sites or local tools directly.</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" id="closeBangsModalBtn" aria-label="Close dialog">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Add Custom Bang Form -->
+            <form id="addBangForm" class="add-rule-form">
+                <div class="rule-inputs-row">
+                    <div class="input-field-group flex-1">
+                        <label for="newBangPrefix">Prefix</label>
+                        <input type="text" id="newBangPrefix" placeholder="!canvas" required autocomplete="off">
+                    </div>
+                    <div class="input-field-group flex-2">
+                        <label for="newBangName">Service Name</label>
+                        <input type="text" id="newBangName" placeholder="University Canvas / LMS" required autocomplete="off">
+                    </div>
+                </div>
+                <div class="rule-inputs-row-sub">
+                    <input type="text" id="newBangUrl" class="notes-input" placeholder="URL template with {q} (e.g. https://canvas.instructure.com/search?q={q})" required>
+                    <button type="submit" class="add-rule-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Add Bang</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Search Bangs Filter -->
+            <div class="bangs-search-box">
+                <input type="text" id="bangsSearchFilter" placeholder="Filter shortcuts by name or prefix (e.g. github, youtube, !arxiv)...">
+            </div>
+
+            <!-- Bangs List Container -->
+            <div class="bangs-scroll-list" id="bangsListContainer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD SPEED DIAL SHORTCUT MODAL -->
+<div id="speedDialModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="speedDialModalTitle">
+    <div class="modal-card" style="max-width: 440px;">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <div class="modal-icon-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="modal-title" id="speedDialModalTitle">Add Quick Launch Link</h2>
+                    <p class="modal-subtitle">Save a favorite website to your homepage quick links.</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" id="closeSpeedDialModalBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <form id="speedDialForm" class="modal-body">
+            <div class="input-field-group">
+                <label for="speedDialTitleInput">Title</label>
+                <input type="text" id="speedDialTitleInput" placeholder="e.g. University LMS / Canvas" required autocomplete="off">
+            </div>
+            <div class="input-field-group">
+                <label for="speedDialUrlInput">URL</label>
+                <input type="url" id="speedDialUrlInput" placeholder="https://..." required autocomplete="off">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px;">
+                <button type="button" class="modal-secondary-btn" id="cancelSpeedDialBtn">Cancel</button>
+                <button type="submit" class="add-rule-btn">
+                    <span>Add to Dials</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- CREATE NEW NOTE MODAL -->
+<div id="noteModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="noteModalTitle">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <div class="modal-icon-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="modal-title" id="noteModalTitle">Create Knowledge Note</h2>
+                    <p class="modal-subtitle">Save technical notes, formulas, and cheatsheets into SQLite FTS5.</p>
+                </div>
+            </div>
+            <button type="button" class="modal-close-btn" id="closeNoteModalBtn" aria-label="Close dialog">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <form id="createNoteForm" class="modal-body">
+            <div class="input-field-group">
+                <label for="noteTitleInput">Note Title</label>
+                <input type="text" id="noteTitleInput" placeholder="e.g. Fourier Transform Properties & Formulas" required autocomplete="off">
+            </div>
+
+            <div class="input-field-group">
+                <label for="noteCategorySelect">Category</label>
+                <select id="noteCategorySelect">
+                    <option value="notes" selected>Notes</option>
+                    <option value="cheatsheets">Cheatsheets</option>
+                    <option value="code">Code & Snippets</option>
+                    <option value="coursework">Coursework & ECE</option>
+                </select>
+            </div>
+
+            <div class="input-field-group">
+                <label for="noteContentInput">Markdown / Text Content</label>
+                <textarea id="noteContentInput" class="note-textarea" rows="8" placeholder="Type or paste markdown content, formulas, or summaries here..." required></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px;">
+                <button type="button" class="modal-secondary-btn" id="cancelNoteBtn">Cancel</button>
+                <button type="submit" class="add-rule-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Save to Vault</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- DOCUMENT VIEWER MODAL -->
+<div id="docViewerModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="docViewerTitle">
+    <div class="modal-card doc-viewer-card">
+        <div class="modal-header">
+            <div class="modal-title-group">
+                <div class="modal-icon-badge" id="docViewerBadge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="modal-title" id="docViewerTitle">Document Viewer</h2>
+                    <p class="modal-subtitle" id="docViewerMeta">Category &bull; Size &bull; Date</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button type="button" class="doc-viewer-copy-btn" id="docViewerCopyBtn" title="Copy document text">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy Text</span>
+                </button>
+                <button type="button" class="modal-close-btn" id="closeDocViewerBtn" aria-label="Close dialog">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body doc-viewer-scroll">
+            <pre class="doc-viewer-pre" id="docViewerContent"></pre>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATIONS POPUP -->
+<div id="toastContainer" class="toast-stack" aria-live="polite"></div>
+
+<script src="app.js?v=4.0"></script>
 </body>
 </html>
